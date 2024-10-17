@@ -1,1 +1,1 @@
-rootProject.name = "promo-worker-notification"
+rootProject.name = "promo-notification-worker"
