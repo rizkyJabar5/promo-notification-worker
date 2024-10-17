@@ -1,4 +1,4 @@
-package id.co.bni.maverick.promoworkernotification;
+package id.co.bni.maverick.promoworkernotification.config;
 
 import org.springframework.boot.task.ThreadPoolTaskExecutorBuilder;
 import org.springframework.context.annotation.Bean;

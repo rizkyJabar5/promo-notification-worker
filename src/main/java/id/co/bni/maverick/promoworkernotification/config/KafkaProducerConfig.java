@@ -1,8 +1,8 @@
-package id.co.bni.maverick.promoworkernotification;
+package id.co.bni.maverick.promoworkernotification.config;
 
-import id.co.bni.maverick.pfm.promobatch.config.properties.KafkaProperties;
+import id.co.bni.maverick.promoworkernotification.config.properties.KafkaProperties;
 import lombok.RequiredArgsConstructor;
-import org.jetbrains.annotations.NotNull;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.kafka.core.DefaultKafkaProducerFactory;
@@ -38,7 +38,7 @@ public class KafkaProducerConfig {
         return new KafkaTemplate<>(producerFactory);
     }
 
-    private @NotNull HashMap<String, Object> configProps() {
+    private HashMap<String, Object> configProps() {
         var properties = new HashMap<String, Object>();
         properties.put(BOOTSTRAP_SERVERS_CONFIG, this.kafkaProperties.bootstrapServers());
         properties.put(ACKS_CONFIG, this.kafkaProperties.producer().acks());

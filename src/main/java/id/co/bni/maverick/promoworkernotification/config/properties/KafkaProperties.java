@@ -1,4 +1,4 @@
-package id.co.bni.maverick.promoworkernotification;
+package id.co.bni.maverick.promoworkernotification.config.properties;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.bind.DefaultValue;
