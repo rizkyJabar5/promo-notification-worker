@@ -27,7 +27,7 @@ spring:
     user: ${spring.datasource.main.username}
     password: ${spring.datasource.main.password}
   kafka:
-    bootstrap-servers: ${kafka.bootstrap-servers}
+    bootstrap-servers: http://localhost:9092
     producer:
       key-serializer: org.apache.kafka.common.serialization.StringSerializer
       value-serializer: org.apache.kafka.common.serialization.JsonSerializer
@@ -38,6 +38,7 @@ spring:
       retry-backoff-ms: 1000
       request-timeout-ms: 30000
       max-block-ms: 60000
+    topic: blast-promo
 
 logging:
   level:
