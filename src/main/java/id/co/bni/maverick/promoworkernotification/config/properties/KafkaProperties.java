@@ -12,15 +12,15 @@ public record KafkaProperties(
         String topic) {
 
     public record ProducerProperties(
-            Integer acks,
-            Double batchSize,
+            String acks,
+            Integer batchSize,
             String clientId,
             String keySerializer,
             String valueSerializer,
             Integer retries,
-            Double retryBackoffMs,
-            Double requestTimeoutMs,
-            Double maxBlockMs,
+            Integer retryBackoffMs,
+            Integer requestTimeoutMs,
+            Integer maxBlockMs,
             @DefaultValue("false")
             Boolean jaas,
             Map<String, String> properties) {

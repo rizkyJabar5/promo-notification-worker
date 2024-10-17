@@ -21,7 +21,7 @@ public class PublisherTaskExecutorConfig {
     TaskExecutor publisherExecutor(TaskDecorator otelTaskDecorator) {
         return new ThreadPoolTaskExecutorBuilder()
                 .allowCoreThreadTimeOut(Boolean.TRUE)
-                .maxPoolSize(1)
+                .maxPoolSize(3)
                 .keepAlive(Duration.ofMillis(1000))
                 .threadNamePrefix("blast-promo-")
                 .taskDecorator(otelTaskDecorator)
