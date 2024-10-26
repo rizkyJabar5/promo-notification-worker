@@ -1,15 +1,22 @@
+#    db_username = "JABAR"
+#    db_password = "oracleApri"
+#    host = "103.127.137.244"
+#    port = "1521"
+#    service_name = "FREEPDB1"
+
 spring:
   datasource:
-    driver-class-name: oracle.jdbc.OracleDriver
-    url: jdbc:oracle:thin:@//localhost:11521/orcdc
-    username: C##PFM_MAV
-    password: password
-    hikari:
-      connection-timeout: 5000
-      idle-timeout: 600000
-      max-lifetime: 1800000
-      minimumIdle: 2
-      maximum-pool-size: 5
+    promo:
+      driver-class-name: oracle.jdbc.OracleDriver
+      url: jdbc:oracle:thin:@//103.127.137.244:1521/FREEPDB1
+      username: JABAR
+      password: oracleApri
+      hikari:
+        connection-timeout: 5000
+        idle-timeout: 600000
+        max-lifetime: 1800000
+        minimumIdle: 2
+        maximum-pool-size: 5
   jpa:
     hibernate:
       ddl-auto: none
@@ -17,15 +24,6 @@ spring:
     open-in-view: false
   application:
     name: promo-worker-notification
-  flyway:
-    table: schema_version_pfm_promo_batch
-    schemas: ${spring.datasource.main.username}
-    enabled: true
-    baseline-on-migrate: true
-    locations: classpath:db/migration
-    url: ${spring.datasource.main.url}
-    user: ${spring.datasource.main.username}
-    password: ${spring.datasource.main.password}
   kafka:
     bootstrap-servers: http://localhost:9092
     producer:
