@@ -21,7 +21,7 @@ import java.time.ZonedDateTime;
 @SuperBuilder
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "MASTER_PROMO_1")
+@Table(name = "MASTER_PROMO")
 @ToString(onlyExplicitlyIncluded = true)
 public class MasterPromo extends BaseEntity {
     @Id
@@ -34,7 +34,7 @@ public class MasterPromo extends BaseEntity {
     @Column(name = "BRAND")
     private String brand;
 
-    private String category;
+    private Integer category;
 
     private String religion;
 
