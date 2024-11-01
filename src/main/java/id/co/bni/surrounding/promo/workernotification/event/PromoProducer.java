@@ -18,8 +18,8 @@ public class PromoProducer {
     private final KafkaTemplate<String, Object> kafkaTemplate;
     private final TaskExecutor publisherExecutor;
 
-    public CompletableFuture<Void> publishAsync(String topic, Object payload) {
-        return CompletableFuture
+    public void publishAsync(String topic, Object payload) {
+        CompletableFuture
                 .runAsync(this.publish(topic, payload), this.publisherExecutor)
                 .whenCompleteAsync((result, err) -> {
                     if (nonNull(err)) {

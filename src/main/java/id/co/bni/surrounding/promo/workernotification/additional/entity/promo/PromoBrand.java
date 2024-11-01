@@ -30,7 +30,11 @@ public class PromoBrand extends BaseEntity {
 
     private String brand;
 
-    private Integer category;
+    @Column(name = "category_dma")
+    private Integer categoryDMA;
+
+    @Column(name = "category_bo")
+    private Integer categoryBO;
 
     private Integer score;
 }

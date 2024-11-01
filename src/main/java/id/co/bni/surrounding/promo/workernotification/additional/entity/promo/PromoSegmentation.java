@@ -27,7 +27,11 @@ public class PromoSegmentation extends BaseEntity {
 
     private Integer segmentation;
 
-    private Integer category;
+    @Column(name = "category_dma")
+    private Integer categoryDMA;
+
+    @Column(name = "category_bo")
+    private Integer categoryBO;
 
     private Integer score;
 }

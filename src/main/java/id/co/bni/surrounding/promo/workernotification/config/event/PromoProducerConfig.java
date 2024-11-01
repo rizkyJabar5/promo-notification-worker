@@ -41,7 +41,7 @@ public class PromoProducerConfig {
     private HashMap<String, Object> configProps() {
         var properties = new HashMap<String, Object>();
         properties.put(BOOTSTRAP_SERVERS_CONFIG, this.kafkaProperties.bootstrapServers());
-        properties.put(ACKS_CONFIG, this.kafkaProperties.producer().acks());
+        properties.put(ACKS_CONFIG, this.kafkaProperties.producer().ack());
         properties.put(BATCH_SIZE_CONFIG, this.kafkaProperties.producer().batchSize());
         properties.put(CLIENT_ID_CONFIG, this.kafkaProperties.producer().clientId());
         properties.put(KEY_SERIALIZER_CLASS_CONFIG, this.kafkaProperties.producer().keySerializer());

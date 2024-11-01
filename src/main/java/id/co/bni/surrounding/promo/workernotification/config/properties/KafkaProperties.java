@@ -12,7 +12,7 @@ public record KafkaProperties(
         String topic) {
 
     public record ProducerProperties(
-            String acks,
+            String ack,
             Integer batchSize,
             String clientId,
             String keySerializer,
@@ -23,7 +23,5 @@ public record KafkaProperties(
             Integer maxBlockMs,
             @DefaultValue("false")
             Boolean jaas,
-            Map<String, String> properties) {
-
-    }
+            Map<String, String> properties) {}
 }

@@ -1,9 +1,3 @@
-#    db_username = "JABAR"
-#    db_password = "oracleApri"
-#    host = "103.127.137.244"
-#    port = "1521"
-#    service_name = "FREEPDB1"
-
 spring:
   datasource:
     promo:
@@ -25,11 +19,11 @@ spring:
   application:
     name: promo-worker-notification
   kafka:
-    bootstrap-servers: http://localhost:9092
+    bootstrap-servers: http://140.245.32.36:9092
     producer:
       key-serializer: org.apache.kafka.common.serialization.StringSerializer
       value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
-      acks: 0
+      ack: 0
       batch-size: 16384
       client-id: ${spring.application.name}
       retries: 5
