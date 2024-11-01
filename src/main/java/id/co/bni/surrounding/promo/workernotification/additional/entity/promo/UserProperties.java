@@ -1,7 +1,6 @@
 package id.co.bni.surrounding.promo.workernotification.additional.entity.promo;
 
 import id.co.bni.surrounding.promo.workernotification.additional.entity.BaseEntity;
-import id.co.bni.surrounding.promo.workernotification.additional.entity.enums.Gender;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
@@ -12,9 +11,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 import lombok.experimental.SuperBuilder;
-
-import java.math.BigDecimal;
-import java.time.ZonedDateTime;
 
 @Entity
 @Getter
@@ -32,9 +28,9 @@ public class UserProperties extends BaseEntity {
     @Column(name = "USER_ID")
     private String userId;
 
-    private Gender gender;
+    private Integer gender;
 
-    private String religion;
+    private Integer religion;
 
     @Column(name = "ACCOUNT_AGE")
     private Integer accountAge;
@@ -42,8 +38,8 @@ public class UserProperties extends BaseEntity {
     private Integer segmentation;
 
     @Column(name = "total_asset")
-    private BigDecimal totalAsset;
+    private Integer totalAsset;
 
     @Column(name = "TRANSACTION_TIME")
-    private ZonedDateTime transactionTime;
+    private Integer transactionTime;
 }
