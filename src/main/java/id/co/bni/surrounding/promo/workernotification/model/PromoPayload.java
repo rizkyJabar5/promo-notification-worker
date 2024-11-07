@@ -5,6 +5,5 @@ import lombok.Builder;
 @Builder
 public record PromoPayload(
         String userId,
-        String promoId,
-        String type) implements BasePayload {
+        String promoId) implements BasePayload {
 }

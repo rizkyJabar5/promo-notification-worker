@@ -26,25 +26,27 @@ import static id.co.bni.surrounding.promo.workernotification.util.PropertyOfUser
 import static id.co.bni.surrounding.promo.workernotification.util.PropertyOfUserEnum.RELIGION;
 import static id.co.bni.surrounding.promo.workernotification.util.PropertyOfUserEnum.SEGMENTATION;
 import static id.co.bni.surrounding.promo.workernotification.util.PropertyOfUserEnum.TRANSACTION_TIME;
-import static java.util.Objects.isNull;
 
 @Service
 @RequiredArgsConstructor
 @Log4j2
 public class PromoService {
+    public static final int ALL_PROPERTIES = 1;
+
     private final KafkaProperties properties;
     private final PromoProducer producer;
     private final MasterPromoRepository masterPromoRepository;
     private final UserPropertiesRepository userPropertiesRepository;
 
     public BaseResponse broadcastPromo(String promoId) {
-        var availablePromo = this.masterPromoRepository.findPromoById(promoId);
+        var availablePromo = this.masterPromoRepository.findPromoById(promoId)
+                .orElseThrow(() -> new RuntimeException("Promo [" + promoId + "] not found"));
 
         var userProperties = this.storePromoUserProperties(availablePromo);
-        var hasSingleUserProperties = userProperties.values().stream().distinct().count() == 1;
+        var isNonFilteredByAllUserProperties = userProperties.values().stream().distinct().count() == ALL_PROPERTIES;
 
-        if (hasSingleUserProperties) {
-            var promoAvailableForAllUser = userPropertiesRepository.findExactPromoUserNonFilterByProperties(availablePromo);
+        if (isNonFilteredByAllUserProperties) {
+            var promoAvailableForAllUser = userPropertiesRepository.findExactPromoUserNonFilterByProperties(availablePromo.getBrand());
             return publishFilteringPayload(promoAvailableForAllUser, availablePromo);
         }
 
@@ -57,7 +59,7 @@ public class PromoService {
 
         var availablePromosWithFilteringAtomic = new AtomicReference<List<UserProperties>>();
         eliminated.forEach((key, value) -> {
-            var promoAvailableForAllUser = userPropertiesRepository.findExactPromoUserNonFilterByProperties(availablePromo);
+            var promoAvailableForAllUser = userPropertiesRepository.findExactPromoUserNonFilterByProperties(availablePromo.getBrand());
 
             availablePromosWithFilteringAtomic.set(
                     promoAvailableForAllUser.stream()
@@ -82,34 +84,41 @@ public class PromoService {
     }
 
     private BaseResponse publishFilteringPayload(List<UserProperties> resultPromo, MasterPromo availablePromo) {
-        // Non Filtering by user properties
         var listOfUserId = resultPromo.stream()
                 .map(UserProperties::getUserId)
                 .toList();
 
-        listOfUserId.forEach(userId -> {
-                    var payload = PromoPayload.builder()
-                            .userId(userId)
-                            .promoId(availablePromo.getId())
-                            .type(availablePromo.getType())
-                            .build();
+        int userAvailableReceivedPromoCount = listOfUserId.size();
 
-                    producer.publishAsync(this.properties.topic(), payload);
-                    log.info("Promo successfully to send to user {}", userId);
-                });
-        log.info("Broadcast promo {} are successfully", listOfUserId.size());
+        if (listOfUserId.isEmpty()) {
+            return BaseResponse.builder()
+                    .status("WARNING")
+                    .instance(String.valueOf(LocalDate.now()))
+                    .message("Not available promo for users")
+                    .build();
+        }
+
+        listOfUserId.forEach(userId -> {
+            var payload = PromoPayload.builder()
+                    .userId(userId)
+                    .promoId(availablePromo.getPromoId())
+                    .build();
+
+            producer.publishAsync(this.properties.topic(), payload);
+        });
+        log.info("Broadcast promo {} are successfully", userAvailableReceivedPromoCount);
 
         return BaseResponse.builder()
                 .status("SUCCESS")
                 .instance(String.valueOf(LocalDate.now()))
-                .message("Success to publish")
+                .message("Succeed to share Promo " + availablePromo.getBrand() + " to " + userAvailableReceivedPromoCount + " users")
                 .build();
     }
 
     private Map<String, Integer> eliminateUserPropertiesGreaterThanOne(Map<String, Integer> userProperties) {
         return Map.copyOf(userProperties.entrySet()
                 .stream()
-                .filter(u -> u.getValue() != 1)
+                .filter(u -> u.getValue() != ALL_PROPERTIES)
                 .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue)));
     }
 
@@ -118,7 +127,7 @@ public class PromoService {
         props.put(GENDER.name(), availablePromo.getGender());
         props.put(RELIGION.name(), availablePromo.getReligion());
         props.put(SEGMENTATION.name(), availablePromo.getSegmentation());
-        props.put(AUM.name(), isNull(availablePromo.getAum()) ? 2 : availablePromo.getAum());
+        props.put(AUM.name(), availablePromo.getAum());
         props.put(ACCOUNT_AGE.name(), availablePromo.getAccountAge());
         props.put(TRANSACTION_TIME.name(), availablePromo.getTransactionTime());
 

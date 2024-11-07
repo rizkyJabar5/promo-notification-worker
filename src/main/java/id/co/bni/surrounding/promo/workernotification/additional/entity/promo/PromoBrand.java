@@ -18,7 +18,7 @@ import lombok.experimental.SuperBuilder;
 @SuperBuilder
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "promo_branding")
+@Table(name = "promo_brand")
 @ToString(onlyExplicitlyIncluded = true)
 public class PromoBrand extends BaseEntity {
     @Id

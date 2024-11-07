@@ -27,9 +27,16 @@ public class MasterPromo extends BaseEntity {
     @Column(nullable = false, length = 21, updatable = false)
     private String id;
 
+    @Column(name = "promo_id")
+    private String promoId;
+
     private String brand;
 
-    private Integer category;
+    @Column(name = "category_dma")
+    private Integer categoryDMA;
+
+    @Column(name = "category_bo")
+    private Integer categoryBO;
 
     private Integer religion;
 
@@ -61,4 +68,10 @@ public class MasterPromo extends BaseEntity {
 
     @Column(name = "is_other")
     private Boolean isOther;
+
+    @Column(name = "is_coming_soon")
+    private Boolean isComingsSoon;
+
+    @Column(name = "is_deleted")
+    private Boolean isDeleted;
 }

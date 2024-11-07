@@ -12,13 +12,14 @@ public interface UserPropertiesRepository extends ReadOnlyRepository<UserPropert
     @Query("""
             select u
             from UserProperties u
-            join PromoBrand pb
-                on upper(pb.brand) = upper(:#{#masterPromo.brand})
-                and pb.categoryBO = :#{#masterPromo.category}
-            join PromoSegmentation ps
-                on ps.segmentation = u.segmentation
-                and ps.categoryBO = pb.categoryBO
-            where u.gender = :#{#masterPromo.gender}
+            where u.userId in (
+                select pb.userId
+                from PromoBrand pb
+                join PromoSegmentation ps
+                    on ps.categoryBO = pb.categoryBO
+                where pb.brand = :#{#masterPromo.brand}
+            )
+            and u.gender = :#{#masterPromo.gender}
             and u.religion = :#{#masterPromo.religion}
             and u.segmentation = :#{#masterPromo.segmentation}
             and u.aum = :#{#masterPromo.aum}
@@ -30,12 +31,13 @@ public interface UserPropertiesRepository extends ReadOnlyRepository<UserPropert
     @Query("""
             select u
             from UserProperties u
-            join PromoBrand pb
-                on upper(pb.brand) = upper(:#{#masterPromo.brand})
-                and pb.categoryBO = :#{#masterPromo.category}
-            join PromoSegmentation ps
-                on ps.segmentation = u.segmentation
-                and ps.categoryBO = pb.categoryBO
+            where u.userId in (
+                select pb.userId
+                from PromoBrand pb
+                join PromoSegmentation ps
+                    on ps.categoryBO = pb.categoryBO
+                where pb.brand = ?1
+            )
             """)
-    List<UserProperties> findExactPromoUserNonFilterByProperties(MasterPromo masterPromo);
+    List<UserProperties> findExactPromoUserNonFilterByProperties(String brand);
 }

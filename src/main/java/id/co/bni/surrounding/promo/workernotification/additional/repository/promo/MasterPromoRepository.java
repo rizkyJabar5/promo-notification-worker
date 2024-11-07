@@ -4,11 +4,14 @@ import id.co.bni.surrounding.promo.workernotification.additional.entity.promo.Ma
 import id.co.bni.surrounding.promo.workernotification.additional.repository.ReadOnlyRepository;
 import org.springframework.data.jpa.repository.Query;
 
+import java.util.Optional;
+
 public interface MasterPromoRepository extends ReadOnlyRepository<MasterPromo, String> {
     @Query("""
             select mp
             from MasterPromo mp
-            where mp.id = ?1
+            where mp.promoId = ?1
+            and mp.isDeleted = false
             """)
-    MasterPromo findPromoById(String promoId);
+    Optional<MasterPromo> findPromoById(String promoId);
 }
